@@ -1,0 +1,19 @@
+{% include 'template.html' %}
+<h1> Update </h1>
+
+<form action="updaterow/{{ office.id }}" method="post">
+{% csrf_token %}
+Office name:<br>
+<input name="officename" value="{{ office.officename }}">
+<br><br>
+Office address:<br>
+<input name="officeaddress" value="{{ office.officeaddress }}">
+<br><br>
+Office head:<br>
+<input name="officehead" value="{{ office.officehead }}">
+<br><br>
+Office table number:<br>
+<input name="officetnumber" value="{{ office.officeheadtnumber }}">
+<br><br>
+<input type="submit" value="Submit">
+</form>

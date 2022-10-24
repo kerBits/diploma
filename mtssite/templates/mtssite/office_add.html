@@ -1,0 +1,19 @@
+{% include 'template.html' %}
+<h1>Add member</h1>
+
+<form action="addrecord/" method="post">
+{% csrf_token %}
+Office name:<br>
+<input name="officename">
+<br><br>
+Office address:<br>
+<input name="officeaddress">
+<br><br>
+Office head:<br>
+<input name="officehead">
+<br><br>
+Office table number:<br>
+<input name="officetnumber">
+<br><br>
+<input type="submit" value="Submit">
+</form>

@@ -1,0 +1,30 @@
+{% include 'template.html' %}
+  <div class="container">
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Номер магазина</th>
+      <th scope="col">Адрес</th>
+      <th scope="col">Управляющий</th>
+      <th scope="col">Табельный номер</th>
+      <th scope="col">Update</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for office in office_list %}
+    <tr>
+        <th scope="row">{{ office.id }}</th>
+        <td>{{ office.officename }}</td>
+        <td>{{ office.officeaddress }}</td>
+        <td>{{ office.officehead }}</td>
+        <td>{{ office.officeheadtnumber }}</td>
+        <td><a href="update/{{ office.id }}">изменить</a></td>
+        <td><a href="delete/{{ office.id }}">удалить</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

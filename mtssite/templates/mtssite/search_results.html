@@ -1,0 +1,4 @@
+{% include 'template.html' %}
+{% for office in object_list %}
+{{office.officename}}, {{office.officeaddress}} <a href="{{ office.get_absolute_url }}"> {{ office.id }} </a>
+{% endfor %}
