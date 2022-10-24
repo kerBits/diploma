@@ -1,2 +1,7 @@
 {% include 'template.html' %}
 {{ office.officename }}
+{{ office.officeaddress }}
+{{ office.officehead }}
+{{ office.officeheadtnumber }}
+<a href="update/{{ office.id }}">Изменить</a>
+<a href="delete/{{ office.id }}">Удалить</a>
