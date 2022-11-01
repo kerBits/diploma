@@ -1,7 +1,10 @@
-{% include 'template.html' %}
+{% extends 'template.html' %}
+{% block title %} Подробная информация об офисе {% endblock %}
+{% block content %}
 {{ office.officename }}
 {{ office.officeaddress }}
 {{ office.officehead }}
 {{ office.officeheadtnumber }}
 <a href="update/{{ office.id }}">Изменить</a>
 <a href="delete/{{ office.id }}">Удалить</a>
+{% endblock %}

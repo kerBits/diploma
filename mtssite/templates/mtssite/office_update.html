@@ -1,6 +1,7 @@
-{% include 'template.html' %}
+{% extends 'template.html' %}
+{% block title %} Обновление информации об офисе {% endblock %}
+{% block content %}
 <h1> Update </h1>
-
 <form action="updaterow/{{ office.id }}" method="post">
 {% csrf_token %}
 Office name:<br>
@@ -17,3 +18,4 @@ Office table number:<br>
 <br><br>
 <input type="submit" value="Submit">
 </form>
+{% endblock %}

@@ -1,4 +1,11 @@
-{% include 'template.html' %}
-{% for office in object_list %}
-{{office.officename}}, {{office.officeaddress}} <a href="{{ office.get_absolute_url }}"> {{ office.id }} </a>
-{% endfor %}
+{% extends 'template.html' %}
+{% block title %} Результат поиска {% endblock %}
+{% block content %}
+{% if office %}
+    {% for office in object_list %}
+        {{office.officename}}, {{office.officeaddress}} <a href="{{ office.get_absolute_url }}"> {{ office.id }} </a>
+    {% endfor %}
+{% else %}
+    Ничего не найдено
+{% endif %}
+{% endblock %}

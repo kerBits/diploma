@@ -1,0 +1,12 @@
+{% extends 'template.html'%}
+{% block title %} Мой профиль {% endblock %}
+{% block content %}
+{{ user.personnel_number }}
+{{ user.email }}
+{{ user.fio }}
+{% if user.shop_number %}
+    {{ user.shop_number }}
+{% else %}
+    Нет
+{% endif %}
+{% endblock %}

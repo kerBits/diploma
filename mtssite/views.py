@@ -15,9 +15,9 @@ from .models import Office, News
 class NewsListView(LoginRequiredMixin, generic.ListView):
     model = News
     template_name = 'news_list.html'
-
+    
     def get_queryset(self):
-        return News.objects.all()
+        return News.objects.order_by('-publish_date')[:5]
 
 
 # отображения списка магазинов
@@ -120,3 +120,8 @@ def authuser(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('authpage'))
+
+@login_required
+def userprofile_view(request):
+    template = loader.get_template('user-profile.html')
+    return HttpResponse(template.render({}, request))

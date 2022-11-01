@@ -1,4 +1,6 @@
-{% include 'template.html' %}
+{% extends 'template.html' %}
+{% block title %} Добавить офис {% endblock %}
+{% block content %}
 <h1>Add member</h1>
 
 <form action="addrecord/" method="post">
@@ -17,3 +19,4 @@ Office table number:<br>
 <br><br>
 <input type="submit" value="Submit">
 </form>
+{% endblock %}
