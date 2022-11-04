@@ -1,7 +1,7 @@
 {% extends 'template.html' %}
 {% block title %} Результат поиска {% endblock %}
 {% block content %}
-{% if office %}
+{% if object_list %}
     {% for office in object_list %}
         {{office.officename}}, {{office.officeaddress}} <a href="{{ office.get_absolute_url }}"> {{ office.id }} </a>
     {% endfor %}

@@ -1,18 +1,31 @@
+from urllib import request
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import View, generic
 from django.db.models import Q
 
-from .models import Office, News
+from .models import CustomUser, Office, News, ProductsInOffice
 # Create your views here.
 
+
+class CustomUserView(PermissionRequiredMixin, LoginRequiredMixin, generic.DetailView):
+    permission_required = 'mtssite.view_customuser'
+    model = CustomUser
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(CustomUserView, self).get_context_data(*args, **kwargs)
+        context['userinfo'] = CustomUser.objects.filter(pk=self.object.pk)
+        print(context)
+        return context
+
 # вывод списка новостей
-class NewsListView(LoginRequiredMixin, generic.ListView):
+class NewsListView(PermissionRequiredMixin, LoginRequiredMixin, generic.ListView):
+    permission_required = 'mtssite.view_news'
     model = News
     template_name = 'news_list.html'
     
@@ -21,7 +34,8 @@ class NewsListView(LoginRequiredMixin, generic.ListView):
 
 
 # отображения списка магазинов
-class OfficeListView(LoginRequiredMixin, generic.ListView):
+class OfficeListView(PermissionRequiredMixin, LoginRequiredMixin, generic.ListView):
+    permission_required = 'mtssite.view_office'
     model = Office
     template_name = 'office_list.html'
 
@@ -30,9 +44,16 @@ class OfficeListView(LoginRequiredMixin, generic.ListView):
 
 
 # страница вывода детализации по магазину
-class OfficeDetailView(LoginRequiredMixin, generic.DetailView):
+class OfficeDetailView(PermissionRequiredMixin, LoginRequiredMixin, generic.DetailView):
+    permission_required = ['mtssite.view_office', 'mtssite.view_productsinoffice']
     login_url = ''
     model = Office
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(OfficeDetailView, self).get_context_data(*args, **kwargs)
+        context['office_products'] = ProductsInOffice.objects.filter(office_id=self.object)
+        print(context)
+        return context
 
 
 class SearchResultsView(LoginRequiredMixin, generic.ListView):
@@ -46,58 +67,6 @@ class SearchResultsView(LoginRequiredMixin, generic.ListView):
             Q(officename__icontains=query) | Q(officeaddress__icontains=query)
         )
         return object_list
-
-
-# вывод страницы добавления офиса
-@login_required
-def addoffice(request):
-    template = loader.get_template('office_add.html')
-    return HttpResponse(template.render({}, request))
-
-
-# добавить запись в бд
-@login_required
-def addrecord(request):
-    oname = request.POST['officename']
-    oaddress = request.POST['officeaddress']
-    ohead = request.POST['officehead']
-    otn = request.POST['officetnumber']
-    office = Office(officename=oname, officeaddress=oaddress,
-                    officehead=ohead, officeheadtnumber=otn)
-    office.save()
-    return HttpResponseRedirect(reverse('office-list'))
-
-# удаление строки офиса из бд по id
-@login_required
-def deleterow(request, id):
-    office = Office.objects.get(id=id)
-    office.delete()
-    return HttpResponseRedirect(reverse('office-list'))
-
-# вывод страницы редактирования
-@login_required
-def updaterow(request, id):
-    office = Office.objects.get(id=id)
-    template = loader.get_template('office_update.html')
-    context = {
-        'office': office
-    }
-    return HttpResponse(template.render(context, request))
-
-# изменение данных определенной строки в бд
-@login_required
-def updaterowrecord(request, id):
-    oname = request.POST['officename']
-    oaddress = request.POST['officeaddress']
-    ohead = request.POST['officehead']
-    otn = request.POST['officetnumber']
-    office = Office.objects.get(id=id)
-    office.officename = oname
-    office.officeaddress = oaddress
-    office.officehead = ohead
-    office.officeheadtnumber = otn
-    office.save()
-    return HttpResponseRedirect(reverse('office-list'))
 
 # Вывод логин страницы
 def authpage(request):
@@ -120,8 +89,3 @@ def authuser(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('authpage'))
-
-@login_required
-def userprofile_view(request):
-    template = loader.get_template('user-profile.html')
-    return HttpResponse(template.render({}, request))

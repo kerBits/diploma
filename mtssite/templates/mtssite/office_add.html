@@ -1,22 +1,17 @@
 {% extends 'template.html' %}
 {% block title %} Добавить офис {% endblock %}
 {% block content %}
-<h1>Add member</h1>
-
+<h1></h1>
 <form action="addrecord/" method="post">
-{% csrf_token %}
-Office name:<br>
-<input name="officename">
-<br><br>
-Office address:<br>
-<input name="officeaddress">
-<br><br>
-Office head:<br>
-<input name="officehead">
-<br><br>
-Office table number:<br>
-<input name="officetnumber">
-<br><br>
-<input type="submit" value="Submit">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="officeNameInput"> Номер офиса: </label>
+        <input type="text" class="form-control" id="officeNameInput" name="officename">
+    </div>
+    <div class="form-group">
+        <label for="officeAddressInput"> Адрес офиса: </label>
+        <input type="text" class="form-control" id="officeAddressInput" name="officeaddress">
+    </div>
+    <input class="btn btn btn-primary btn-block mt-4" type="submit" value="Submit">
 </form>
 {% endblock %}
