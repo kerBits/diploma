@@ -5,9 +5,9 @@
     <table class="table">
   <thead>
     <tr>
-      <th scope="col">Номер магазина</th>
+      <th scope="col">Номер офиса</th>
       <th scope="col">Адрес</th>
-      <th scope="col">Управляющий</th>
+      <th scope="col">Руководитель</th>
       <th scope="col">Табельный номер</th>
       <th scope="col">Подробнее</th>
     </tr>
@@ -17,9 +17,14 @@
     <tr>
         <td>{{ office.officename }}</td>
         <td>{{ office.officeaddress }}</td>
-        <td>{{ office.officehead }}</td>
-        <td>{{ office.officeheadtnumber }}</td>
-        <td><a href="{{ office.id }}">Перейти</a></td>
+        {% if office.officeheadinfo %}
+          <td><a name="user_id" href='{% url 'user-profile-detail' office.officeheadinfo.id %}'>{{ office.officeheadinfo.get_full_name }}</a></td>
+          <td>{{ office.officeheadinfo.get_personnel_number }}</td>
+        {% else %}
+          <td>-</td>
+          <td>-</td>
+        {% endif %}
+        <td><a href="{{ office.id }}">Перейти</a></td>    
     </tr>
     {% endfor %}
     </tbody>

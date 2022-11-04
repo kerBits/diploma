@@ -7,7 +7,120 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
 # Register your models here.
-from .models import News, CustomUser
+from .models import News, CustomUser, Office, ProdCodes, Product, ProductsInOffice
+
+@admin.register(ProductsInOffice)
+class ProductsInOfficeAdmin(admin.ModelAdmin):
+    model = ProductsInOffice
+
+    list_display = (
+        'product',
+        'office_id',
+        'quantity',
+    )
+
+    list_filter = (
+        'product',
+    )
+
+    list_editable = (
+        'quantity',
+    )
+
+    search_fields = (
+        'office_id',
+    )
+
+    ordering = ('office_id', )
+
+
+@admin.register(ProdCodes)
+class ProdCodesAdmin(admin.ModelAdmin):
+    model = ProdCodes
+
+    list_display = (
+        'id',
+        'code',
+        'type',
+    )
+
+    list_filter = (
+        'code',
+        'type',
+    )
+
+    list_editable = (
+        'code',
+        'type',
+    )
+
+    search_fields = (
+        'code',
+        'type'
+    )
+
+    ordering = ('code',)
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    model = Product
+
+    list_display = (
+        'id',
+        'prod_name',
+        'code',
+        'manufacturer',
+        'description',
+    )
+
+    list_filter = (
+        'prod_name',
+        'code',
+    )
+
+    list_editable = (
+        'prod_name',
+        'code',
+        'manufacturer',
+        'description',
+    )
+
+    search_fields = (
+        'prod_name',
+        'manufacturer',
+    )
+
+    ordering = ('prod_name',)
+
+
+@admin.register(Office)
+class OfficeAdmin(admin.ModelAdmin):
+    model = Office
+
+    list_display = (
+        'id',
+        'officename',
+        'officeaddress',
+        'officeheadinfo',
+    )
+
+    list_filter = (
+        'officename',
+    )
+
+    list_editable = (
+        'officename',
+        'officeaddress',
+        'officeheadinfo',
+    )
+
+    search_fields = (
+        'officename',
+        'officeaddress',
+    )
+
+    ordering = ('officename',)
+
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
@@ -93,7 +206,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('personnel_number', 'password')}),
         ('Personal info', {'fields': ('fio', 'email', 'shop_number')}),
-        ('Permissions', {'fields': ('is_admin',)}),
+        ('Permissions', {'fields': ('is_admin', 'groups', '')}),
     )
 
     add_fieldsets = (
@@ -109,4 +222,3 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(CustomUser, UserAdmin)
-admin.site.unregister(Group)

@@ -2,26 +2,19 @@
 {% load static %}
 {% block title %} Новости {% endblock %}
 {% block content %}
-<div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
         {% for news in news_list %}
         <div class="card mt-4">
             <h4 class="card-header">
-                {{ news.subtitle }}
+                {{ news.title }}
             </h4>
             <div class="card-body">
-                <h4 class="card-title">{{ news.title }}</h4>
+                <h4 class="card-title">{{ news.subtitle }}</h4>
                 <p class="card-text">{{ news.body|safe }}</p>
             </div>
             <div class="card-footer text-muted">
-                {{ news.publish_date }}
-                {{ news.author_id }}
+                <p>Дата публикации: {{ news.publish_date }}</p>
+                <p>Автор: {{ news.author.get_full_name }}</p>
             </div>
         </div>
         {% endfor %}
-    <div class="col-md-3">
-    </div>
-</div>
 {% endblock %}

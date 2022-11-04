@@ -1,24 +1,24 @@
 {% extends 'template.html'%}
-{% block title %} Мой профиль {% endblock %}
+{% block title %} Профиль {% endblock %}
 {% block content %}
 <div class="card mb-4 mt-3">
     <div class="card-body">
+    {% for user in userinfo %}
         {% for label, info in user.get_user_info.items %}
       <div class="row">
         <div class="col-sm-3">
           <p class="mb-0">{{ label }}</p>
         </div>
         <div class="col-sm-9">
-            {% if label == 'Номер офиса' and info != None %}
-                <a href="{% url 'office-detail' user.id %}"> {{ info }} </a>
-            {% elif info != None %}
-                <p class="text-muted mb-0"> {{ info }} </p>
+            {% if info %}
+                <p class="text-muted mb-0">{{ info }}</p>
             {% else %}
                 <p class="text-muted mb-0"> - </p>
             {% endif %}
         </div>
       </div>
       <hr>
+      {% endfor %}
       {% endfor %}
     </div>
 </div>
