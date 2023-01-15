@@ -14,10 +14,12 @@ from .models import CustomUser, Office, News, ProductsInOffice
 
 
 class CustomUserView(PermissionRequiredMixin, LoginRequiredMixin, generic.DetailView):
+    '''Класс-view отображения информации о пользователе'''
     permission_required = 'mtssite.view_customuser'
     model = CustomUser
 
     def get_context_data(self, *args, **kwargs):
+        '''Функция переопределяет родительскую и возвращает context с информацией о пользователе'''
         context = super(CustomUserView, self).get_context_data(*args, **kwargs)
         context['userinfo'] = CustomUser.objects.filter(pk=self.object.pk)
         print(context)
@@ -25,31 +27,37 @@ class CustomUserView(PermissionRequiredMixin, LoginRequiredMixin, generic.Detail
 
 # вывод списка новостей
 class NewsListView(PermissionRequiredMixin, LoginRequiredMixin, generic.ListView):
+    '''Класс-view отображения списка из пяти последних новостей'''
     permission_required = 'mtssite.view_news'
     model = News
     template_name = 'news_list.html'
     
     def get_queryset(self):
+        '''Функция возвращает список из пяти последних элементов'''
         return News.objects.order_by('-publish_date')[:5]
 
 
 # отображения списка магазинов
 class OfficeListView(PermissionRequiredMixin, LoginRequiredMixin, generic.ListView):
+    '''Класс-view отображения списка всех офисов'''
     permission_required = 'mtssite.view_office'
     model = Office
     template_name = 'office_list.html'
 
     def get_queryset(self):
+        '''Функция возвращает список офисов'''
         return Office.objects.all()
 
 
 # страница вывода детализации по магазину
 class OfficeDetailView(PermissionRequiredMixin, LoginRequiredMixin, generic.DetailView):
+    '''Класс-view отображения выбранного офиса'''
     permission_required = ['mtssite.view_office', 'mtssite.view_productsinoffice']
     login_url = ''
     model = Office
 
     def get_context_data(self, *args, **kwargs):
+        '''Функция переопределяет родительскую и возвращает context с информацией об офисе'''
         context = super(OfficeDetailView, self).get_context_data(*args, **kwargs)
         context['office_products'] = ProductsInOffice.objects.filter(office_id=self.object)
         print(context)
