@@ -100,6 +100,7 @@ class CustomUserManager(BaseUserManager):
             personnel_number=personnel_number,
             email=self.normalize_email(email),
             fio=fio,
+            password=password,
         )
 
         user.set_password(password)
@@ -113,7 +114,6 @@ class CustomUserManager(BaseUserManager):
             fio=fio,
             password=password,
             shop_number=shop_number,
-            is_superuser = True,
         )
 
         user.is_admin = True

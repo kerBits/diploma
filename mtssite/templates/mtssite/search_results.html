@@ -2,10 +2,23 @@
 {% block title %} Результат поиска {% endblock %}
 {% block content %}
 {% if object_list %}
-    {% for office in object_list %}
-        {{office.officename}}, {{office.officeaddress}} <a href="{{ office.get_absolute_url }}"> {{ office.id }} </a>
-    {% endfor %}
+<div class="container">
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th scope="col">Результаты</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for office in object_list %}
+        <tr>
+            <td>Номер офиса: {{office.officename}}, Адрес: {{office.officeaddress}} [<a href="{{ office.get_absolute_url }}">  {{ 'Детальная информация' }} </a>]</td>
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% else %}
-    Ничего не найдено
+    <p>Ничего не найдено</p>
 {% endif %}
+</div>
 {% endblock %}
